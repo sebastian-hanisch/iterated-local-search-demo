@@ -1,9 +1,9 @@
 # Iterated Local Search – eine Lieferrunde, die ein gutes Optimum stört statt es wegzuwerfen – Streamlit-Demo
 
-**[→ Demo live ausprobieren](#)** (Deploy offen)
+**[→ Demo live ausprobieren](https://sebastianhanisch-iterated-local-search-demo.streamlit.app/)**
 
 Drittes Stück der **Trajektorien-Metaheuristiken-Linie** der "Konzepte"-Reihe für die Website "Sebastian Hanisch – Operations Research und Machine Learning":
-dieselbe Rundtour wie in der [hill-climbing-demo](../hill-climbing-demo) und der [simulated-annealing-demo](../simulated-annealing-demo) (ein Depot, n Kundenstopps in einem 100 × 100-km-Gebiet), dieselbe untere Schranke.
+dieselbe Rundtour wie in der [hill-climbing-demo](https://sebastianhanisch-hill-climbing-demo.streamlit.app/) und der [simulated-annealing-demo](https://sebastianhanisch-simulated-annealing-demo.streamlit.app/) (ein Depot, n Kundenstopps in einem 100 × 100-km-Gebiet), dieselbe untere Schranke.
 Anders als **Hill Climbing mit Neustarts** (eine fertige Tour wegwerfen, komplett neu anfangen) oder **Simulated Annealing** (Verschlechterungen mit sinkender Wahrscheinlichkeit annehmen) tut **Iterated Local Search** (ILS) etwas drittes: eine bereits gute Tour wird gezielt **gestört** (ein **Doppelbrücken-Zug**, den kein einzelner
 2-opt-Zug rückgängig machen kann) und **neu abgestiegen** – der Großteil der Tour bleibt erhalten, nur die Umgebung der Störung wird neu optimiert.
 
@@ -61,7 +61,7 @@ Die einzelne Standardinstanz landet hier durch Zufall sehr nah am echten Optimum
 
 ## Modell und Verfahren
 
-- **Instanz, Nachbarschaften, Abstieg, Schranke** (`ils_scenario.py`, `ils_tour.py`): wortgleiche Kopie aus der [hill-climbing-demo](../hill-climbing-demo) (per Test gegen eingefrorene Werte), über die [simulated-annealing-demo](../simulated-annealing-demo), die bereits das Bewertungsbudget `max_evaluations` ergänzt hat.
+- **Instanz, Nachbarschaften, Abstieg, Schranke** (`ils_scenario.py`, `ils_tour.py`): wortgleiche Kopie aus der [hill-climbing-demo](https://sebastianhanisch-hill-climbing-demo.streamlit.app/) (per Test gegen eingefrorene Werte), über die [simulated-annealing-demo](https://sebastianhanisch-simulated-annealing-demo.streamlit.app/), die bereits das Bewertungsbudget `max_evaluations` ergänzt hat.
 - **Doppelbrücken-Zug** (`ils_kick.py`): drei zufällige Schnittpunkte teilen die Tour in vier Stücke; die mittleren beiden tauschen den Platz. Mindestlänge 2 je Stück verhindert, dass der Zug zu einem einzelnen 2-opt-Zug entartet (geprüft: erschöpfend gegen alle 2-opt-Züge auf kleinen Instanzen, keine einzige Doppelbrücke ist darunter).
 - **Kandidatenliste + Don't-Look-Bits** (`ils_dlb.py`, aus der Hill-Climbing-Demo übernommen und um den `touched`-Kurzweg erweitert): nach einem Kick startet die Warteschlange nur mit den Endpunkten der neuen Kanten, nicht mit allen Knoten – das macht den Wiederabstieg billig (geprüft: erreicht dasselbe Lokaloptimum wie ein voller Scan, mit weit weniger Bewertungen).
 - **ILS-Schleife** (`ils_algorithm.py`): erster Abstieg aus der Startlösung, dann Kick → Wiederabstieg → Annahme ("nur besser": übernehmen, wenn mindestens so kurz, sonst bei der vorigen Tour bleiben; "immer": Random Walk über lokale Optima), bis das Bewertungsbudget erschöpft ist. Ein Vorschlag = eine bewertete Nachbarschaft, dieselbe Einheit wie in den Geschwister-Demos.
