@@ -349,7 +349,7 @@ if st.session_state.get("ls_on"):
     with st.spinner("Rechne beide lokalen Suchen × 5 Instanzen × 3 Ketten..."):
         rows_ls = _sweep("local_search", base_sweep)
     st.table({"Lokale Suche": [C.LOCAL_SEARCH_LABELS[r["value"]] for r in rows_ls], "Beste Tour (%)": [f"{r['gap']:.2f}" for r in rows_ls], "Iterationen": [f"{r['iterations']:.0f}" for r in rows_ls]})
-    st.caption("Mittel über 5 feste Instanzen × 3 Ketten (200 Tausend Vorschläge, 1 Doppelbrücke). Kandidatenliste + DLB: **0.64 %** bei rund **2744** Iterationen; voller Rescan: **3.58 %** bei nur rund **12** Iterationen - derselbe Faktor wie beim Hill-Climbing-Neustart-Vergleich. "
+    st.caption("Mittel über 5 feste Instanzen × 3 Ketten (200 Tausend Vorschläge, 1 Doppelbrücke). Kandidatenliste + DLB: **0.64 %** bei rund **2744** Iterationen; voller Rescan: **3.58 %** bei nur rund **12** Iterationen - der Abstand zur Schranke ist gut 5-mal so groß, die Zahl der Iterationen rund 230-mal kleiner. "
                "Iterated Local Search lebt davon, dass ein Wiederabstieg billig ist; ohne Kandidatenliste ist er das nicht, und die Wiederverwendung bringt kaum noch etwas gegenüber einem Neustart.")
 
 st.markdown("---")
