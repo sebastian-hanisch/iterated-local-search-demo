@@ -104,7 +104,7 @@ with st.sidebar:
     st.header("⚙️ Einstellungen")
     n_stops = st.slider(
         "Stopps", *bounds("n_slider"), key="n_slider", step=C.N_STEP,
-        help="Anzahl der Kundenstopps (das Depot kommt dazu). Bei 200 Tausend Vorschlägen liegt die beste Tour bei 60 Stopps im Mittel 0.64 % über der Schranke; bei 200 Stopps und 1 Million Vorschlägen 1.90 %.",
+        help="Anzahl der Kundenstopps (das Depot kommt dazu). Bei 200 Tausend Vorschlägen liegt die beste Tour bei 60 Stopps im Mittel 0.64 % über der Schranke; bei 200 Stopps und 1 Million Vorschlägen 1.65 %.",
     )
     cluster_share = st.slider(
         "Anteil der Stopps in Gruppen [%]", *bounds("ballung_slider"), key="ballung_slider", step=C.BALLUNG_STEP,
@@ -394,8 +394,8 @@ st.markdown(
 """
 )
 st.caption(
-    "Die Nachbarn der Trajektorien-Metaheuristiken-Linie (noch nicht gebaut): VNS (systematisch wachsende Störstärke) und ALNS (lernt, welcher Umbau sich lohnt) bauen direkt auf Iterated Local Search auf; Tabu Search, GRASP und der Nachbarschafts-Zweig "
-    "(Lin-Kernighan, VLSN, VRP-Nachbarschaften) sind andere Antworten auf dieselbe Schwäche der Wurzel."
+    "Die Nachbarn der Trajektorien-Metaheuristiken-Linie (alle gebaut): VNS (systematisch wachsende Störstärke) und ALNS (lernt, welcher Umbau sich lohnt) bauen direkt auf Iterated Local Search auf; Tabu Search, GRASP und der Nachbarschafts-Zweig "
+    "(Lin-Kernighan, Dynasearch, VRP-Nachbarschaften) sind andere Antworten auf dieselbe Schwäche der Wurzel."
 )
 
 st.markdown("---")
@@ -424,6 +424,6 @@ Implementiert in `ils_kick.py` (Doppelbrücke), `ils_dlb.py` (Kandidatenliste + 
 st.markdown("---")
 st.caption(
     "Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – "
-    "Operations Research und Machine Learning. Interesse an einer maßgeschneiderten Lösung für "
-    "Ihr Unternehmen? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html)"
+    "Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). "
+    "Mehr zur Reihe: [Trajektorien-Metaheuristiken: HC bis ALNS](https://sebastianhanisch.net/konzepte-trajektorien-metaheuristiken.html)."
 )

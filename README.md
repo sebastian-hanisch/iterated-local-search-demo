@@ -12,10 +12,10 @@ Anders als **Hill Climbing mit Neustarts** (eine fertige Tour wegwerfen, komplet
 hill-climbing-demo (Wurzel: nur bergab, bleibt im ersten Optimum stecken)        [gebaut]
   ├─ simulated-annealing-demo (nimmt Verschlechterungen an, Abkühlplan)          [gebaut]
   ├─ iterated-local-search-demo (stört ein gutes Optimum, statt neu zu starten)  [dieses Stück]
-  │     └─ VNS → ALNS  (Störstärke wächst systematisch; lernt, welcher Umbau sich lohnt)   [nicht gebaut]
+  │     └─ VNS → ALNS  (Störstärke wächst systematisch; lernt, welcher Umbau sich lohnt)   [gebaut]
   │           ^ Querkante zu Lin-Kernighan (chained LK = ILS mit LK als innerer Suche)
-  ├─ Tabu Search              (Gedächtnis gegen Rückwege)                        [nicht gebaut]
-  └─ GRASP                    (randomisierte Konstruktion, viele Starts)         [nicht gebaut]
+  ├─ Tabu Search              (Gedächtnis gegen Rückwege)                        [gebaut]
+  └─ GRASP                    (randomisierte Konstruktion, viele Starts)         [gebaut]
 ```
 
 Ergebnis in Kürze: **Wiederverwenden schlägt Wegwerfen, aber nur mit der richtigen lokalen Suche und nur, solange das Budget knapp ist.** 60 Stopps, 200 Tausend Vorschläge (bewertete Nachbarschaften): die beste Tour liegt im Mittel **0.64 %** über der Schranke; Hill Climbing mit Neustarts und **derselben** lokalen Suche
@@ -29,8 +29,8 @@ etwas (**3.58 %** bei nur rund 12 Iterationen). Und die Annahmeregel entscheidet
 | **Lokale Suche** | ❌❗ Voller Rescan statt Kandidatenliste + DLB: **3.58 %** bei nur rund **12** Iterationen statt 0.64 % bei rund **2744** – die Wiederverwendung lohnt sich nur, wenn der Wiederabstieg billig ist |
 | **Störstärke** | ⚠️ 1 / 2 / 3 / 5 / 8 Doppelbrücken je Kick (25 Tausend Vorschläge): **1.03 / 0.85 / 0.78 / 0.87 / 1.11 %** – ein Sweet Spot bei 2-3, nicht beim literaturüblichen Standardwert 1 und nicht bei starken Störungen |
 | **Annahme** | ❗ "Nur besser": beste **0.64 %**, letzte **0.64 %** (identisch). "Immer annehmen" (Random Walk): beste **0.67 %** (kaum schlechter), letzte **14.18 %** – ohne die Annahmeregel verlässt die Kette gute Touren wieder |
-| **Startlösung** | ➖ Zufällig 0.64 %, Nächster Nachbar 0.64 % über der Schranke – kein messbarer Unterschied (ein einzelner Hill-Climbing-Abstieg spürt die Startlösung dagegen deutlich: 6.8 gegen 5.4 %) |
-| **Größe** | ✅ 200 Stopps, 1 Million Vorschläge: **1.90 %** gegen **4.71 %** für Hill Climbing mit Neustarts (Kandidatenliste + DLB) – der Vorsprung wächst mit der Instanzgröße, nicht umgekehrt |
+| **Startlösung** | ➖ Zufällig 0.64 %, Nächster Nachbar 0.50 % über der Schranke – kein messbarer Unterschied (die Ketten streuen um 0.2–0.5 Prozentpunkte; ein einzelner Hill-Climbing-Abstieg endet bei 7.9 % gegen 7.3 %) |
+| **Größe** | ✅ 200 Stopps, 1 Million Vorschläge: **1.65 %** gegen **6.53 %** für Hill Climbing mit Neustarts (Kandidatenliste + DLB) – der Vorsprung wächst mit der Instanzgröße, nicht umgekehrt |
 | **Neustarts ohne Kandidatenliste (voller Rescan)** | ✅ Bei 10 / 25 / 50 / 100 Tausend Vorschlägen identisch **7.88 %** (ein Abstieg braucht bei 60 Stopps schon fast 74 Tausend Bewertungen, kein zweiter Neustart passt); erst ab 500 Tausend sinkt es (2.93 %) |
 
 ## Was die Demo zeigt
@@ -73,7 +73,7 @@ Die einzelne Standardinstanz landet hier durch Zufall sehr nah am echten Optimum
 - **Vorab-Vermutung (vor dem Bau notiert): "ILS schlägt Neustarts, weil es Struktur wiederverwendet"** – **bestätigt, aber nur mit der richtigen lokalen Suche und nur bei knappem Budget**: mit vollem Rescan (kein Kurzweg für den Wiederabstieg) verliert ILS klar gegen Neustarts (3.58 % gegen 0.68 % bei Kandidatenliste + DLB) – ohne einen billigen Wiederabstieg ist "Struktur wiederverwenden" kein Vorteil, weil jede Iteration fast so teuer ist wie ein Neustart. Und selbst mit der günstigen lokalen Suche schrumpft der Vorsprung mit wachsendem Budget (1.36 gegen 2.35 % bei 10 Tausend, 0.58 gegen 0.58 % bei 2 Millionen): ab genug Neustarts holt der Neustart die Wiederverwendung ein, weil beide dieselbe billige lokale Suche nutzen.
 - **Die Störstärke ist ein Kompromiss, keine "mehr ist besser"-Größe.** 1 Doppelbrücke (der in der Literatur übliche Standardwert) ist bei knappem Budget NICHT optimal (1.03 %); der Sweet Spot liegt bei 2-3 (0.78-0.85 %); bei 8 wird es wieder schlechter (1.11 %) – nicht vorhergesagt, sondern gemessen.
 - **Die Annahmeregel entscheidet fast alles über die LETZTE Tour, kaum etwas über die BESTE.** "Immer annehmen" findet praktisch dieselbe beste Tour (0.67 % gegen 0.64 %, die beste Tour wird ja unabhängig von der Annahme gemerkt), aber die Kette selbst wandert bei 200 Tausend Vorschlägen bis auf **14.18 %** über der Schranke weg – ein Befund, der zeigt, wie wichtig "nur besser" für die Praxis ist (wo meist die letzte, nicht die beste Tour gebraucht wird), obwohl er die Demo-Kennzahl "beste Tour" kaum berührt.
-- **Startlösung ist bei ILS fast egal** (0.64 % gegen 0.64 %), obwohl sie bei einem einzelnen Hill-Climbing-Abstieg noch deutlich zählt (6.8 gegen 5.4 %) – die vielen Kicks vergessen die Startlösung schneller, als ein einzelner Abstieg es könnte.
+- **Startlösung ist bei ILS fast egal** (0.64 % gegen 0.50 %, innerhalb der Streuung der Ketten), während der Unterschied bei einem einzelnen Hill-Climbing-Abstieg 7.9 gegen 7.3 % beträgt – die vielen Kicks vergessen die Startlösung schneller, als ein einzelner Abstieg es könnte.
 - **Synthetische Instanzen:** euklidisch, gleichverteilt oder in fünf Gruppen, ein Fahrzeug, keine Kapazitäten oder Zeitfenster. Zeiten hängen vom Rechner und der Python-Version ab (die Tests prüfen nur Größenordnungen).
 
 ## Verifikation
@@ -117,6 +117,4 @@ pytest tests/ -v
 
 ---
 
-Teil des [Operations-Research-Demo-Portfolios](https://sebastianhanisch.net/demos.html) von
-[Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning.
-Interesse an einer maßgeschneiderten Lösung? [Kontakt aufnehmen](https://sebastianhanisch.net/kontakt.html).
+Diese Demo ist Teil des Portfolios von [Sebastian Hanisch](https://sebastianhanisch.net) – Operations Research und Machine Learning ([Über mich](https://sebastianhanisch.net/ueber-mich.html)). Mehr zur Reihe: [Trajektorien-Metaheuristiken: HC bis ALNS](https://sebastianhanisch.net/konzepte-trajektorien-metaheuristiken.html).

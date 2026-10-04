@@ -67,8 +67,8 @@ PRESET_HELP = {
     "Immer annehmen (Random Walk)": "Jede neue Tour wird angenommen, auch schlechtere: die beste gefundene Tour bleibt fast gleich gut (0.67 % gegen 0.64 % bei 'nur besser'), aber die LETZTE Tour der Kette liegt bei 14.18 % über der Schranke - ohne die Annahmeregel verlässt die Suche die guten Touren wieder.",
     "Zu starke Störung (8 Doppelbrücken)": "8 Doppelbrücken je Kick bei knappem Budget (10 Tausend): 1.71 % über der Schranke gegen 1.36 % bei nur einer Doppelbrücke - jede Iteration kostet mehr, es passen weniger davon ins Budget.",
     "Kalibrierte Störung (3 Doppelbrücken)": "3 Doppelbrücken je Kick bei 25 Tausend Vorschlägen: 0.78 % über der Schranke - besser als 1 Doppelbrücke (1.03 %, der literaturübliche Standardwert) oder 8 (1.11 %): ein Sweet Spot, kein Rand.",
-    "Nächster Nachbar als Start": "Die erste Doppelbrücke vergisst die Startlösung schnell: Nächster Nachbar 0.64 % gegen zufällig 0.64 % über der Schranke - kein messbarer Unterschied (anders als beim einzelnen Hill-Climbing-Abstieg: 5.4 % gegen 6.8 %).",
-    "Große Instanz (200 Stopps, 1 Million)": "200 Stopps, 1 Million Vorschläge: 1.90 % über der Schranke gegen 4.71 % für Hill Climbing mit Neustarts (Kandidatenliste + DLB) bei gleichem Budget - der Vorsprung wächst mit der Instanzgröße.",
+    "Nächster Nachbar als Start": "Die erste Doppelbrücke vergisst die Startlösung schnell: Nächster Nachbar 0.50 % gegen zufällig 0.64 % über der Schranke - kein messbarer Unterschied (die Ketten streuen um 0.2-0.5 Prozentpunkte; ein einzelner Hill-Climbing-Abstieg endet bei 7.3 % gegen 7.9 %).",
+    "Große Instanz (200 Stopps, 1 Million)": "200 Stopps, 1 Million Vorschläge: 1.65 % über der Schranke gegen 6.53 % für Hill Climbing mit Neustarts (Kandidatenliste + DLB) bei gleichem Budget - der Vorsprung wächst mit der Instanzgröße.",
 }
 # Urteile, die bei diesem Preset über verschiedene Instanzen und Ketten-Seeds vorkommen (jedes Preset wird über mehrere Instanzen x 2 Ketten gemessen)
 PRESET_EXPECTED_BANDS = {

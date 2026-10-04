@@ -113,7 +113,8 @@ def test_local_search_numbers_at_two_hundred_thousand():
 
 def test_large_instance_at_two_hundred_stops_one_million_budget():
     row = ev.run_config(ev.Settings(n=200), budget=1000000)
-    near(row["gap"], 1.9, 1.0)
+    near(row["gap"], 1.65, 0.5)
+    near(row["dlbr"], 6.53, 1.0)
     assert row["gap"] < row["dlbr"] - 0.5                              # der Vorsprung ist bei größeren Instanzen nicht kleiner
 
 
