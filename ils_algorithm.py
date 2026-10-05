@@ -47,7 +47,7 @@ def run(D, start, cand=None, local_search="dlb", n_bridges=1, accept="better", b
         raise ValueError("local_search='dlb' braucht Kandidatenlisten (cand)")
     rng = np.random.default_rng(seed)
     evaluations = iterations = accepted = 0
-    trace_every = max(1, budget // trace_points)
+    trace_every = max(1, budget // trace_points)                      # Abstand der Verlaufspunkte in BEWERTETEN NACHBARN (nicht in Iterationen: eine Iteration kostet viele Bewertungen)
 
     # Erster Abstieg aus der Startlösung (touched=None: die ganze Tour muss optimiert werden, nicht nur eine Umgebung) -
     # das eigentliche ILS beginnt erst danach, mit Kicks AUF einem bereits lokal optimalen Tour.
@@ -62,6 +62,7 @@ def run(D, start, cand=None, local_search="dlb", n_bridges=1, accept="better", b
     best_tour, best_length = current.copy(), current_length
     snapshots = [current.copy()] if keep_snapshots else []
     tr_it, tr_len, tr_best = [evaluations], [current_length], [current_length]
+    next_trace = (evaluations // trace_every + 1) * trace_every
 
     while evaluations < budget:
         remaining = budget - evaluations
@@ -83,10 +84,11 @@ def run(D, start, cand=None, local_search="dlb", n_bridges=1, accept="better", b
             best_length, best_tour = current_length, current.copy()
         if keep_snapshots:
             snapshots.append(current.copy())
-        if iterations % trace_every == 0 or evaluations >= budget:
+        if evaluations >= next_trace or evaluations >= budget:
             tr_it.append(evaluations)
             tr_len.append(current_length)
             tr_best.append(best_length)
+            next_trace = (evaluations // trace_every + 1) * trace_every
 
     final_length = T.tour_length(current, D)                          # Rundungsfehler der Delta-Summen beseitigen
     best_length = T.tour_length(best_tour, D)
